@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>posts</title>
+    <style>
+        /* reset code starts  */
+        *{
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+        /* reset code end */
+        h1{
+          text-align: center;
+          font-size: 3rem;
+        }
+        /* posts starts here */
+        .posts{
+          width: 100%;
+          /* background-color: aqua; */
+          padding: 1rem;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+         .post {
+          width: 23%;
+          margin: 0.3rem;
+          box-shadow: 0 4px 16px 0 rgba(0, .0, .0, 0.2);
+          padding: 1rem;
+          transition: all 0.4s;
+         }
+         .post:hover {
+           box-shadow: 0 8px 16px 0 rgba(0, .0, .0, 0.2);
+         }
+        /* posts end here */
+
+        /* responsive parts starts here  */
+       @media screen and (max-width:992px) {
+        .post {
+          width: 48%;
+         }
+        }
+        @media screen and (max-width:600px) {
+        .post {
+          width: 100%;
+         }
+        }
+        /* responsive parts end here */
+    </style>
+</head>
+<body>
+    <h1>Posts</h1>
+    <div class="posts">
+       <!-- <div class="post">
+          <h4 class="post-title">post title 1</h4>
+          <p class="post-body">post description 1</p>
+      </div>  -->
+     </div>
+
+   <script>
+       const posts = [
+        {
+          title : "this is title1",
+          body : "this is body1",
+        },
+         {
+          title : "this is title2",
+          body : "this is body"2,
+        },
+         {
+          title : "this is title3",
+          body : "this is body3",
+        },
+         {
+          title : "this is title4",
+          body : "this is body4",
+        },
+        {
+          title : "this is title5",
+          body : "this is body5",
+        },
+         {
+          title : "this is title6",
+          body : "this is body6",
+        },
+         {
+          title : "this is title7",
+          body : "this is body7",
+        },
+         {
+          title : "this is title8",
+          body : "this is body8",
+        },
+       ];
+      //   <div class="post">
+      //     <h4 class="post-title">post title 1</h4>
+      //     <p class="post-body">post description 1</p>
+      //  </div> 
+
+       // selectiion
+        const postsElement = document.querySelector(".posts");
+
+        const loadAllData = () => {
+          posts.map((post) => {
+            const postElement = document.createElement("div");
+            postElement.classList.add("post");
+            postElement.innerHTML = `
+            <h4 class="post-title">${post.title}</h4>
+            <p class="post-body">${post.body}</p>`;
+
+            postsElement.appendChild(postElement);
+          });
+        };
+
+       loadAllData();
+   </script>
+</body>
+</html>

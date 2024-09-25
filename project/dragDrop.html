@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag Drop</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: 'poppins','sans-serif';
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f1f1f1;
+            height: 100vh;
+        }
+        .AppBody {
+            border: 3px dotted #d1d6d6;
+            width: 600px;
+            height: 400px;
+            background-color: #fff;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-style: italic;
+        }
+       .AppBody.active {
+            border: 3px solid rgb(49, 168, 12);
+       } 
+       /* .icon {
+            font-size: 100px;
+            color: rgba(13, 204, 45, 0.651);
+       } */
+       .AppBody h3 {
+            font-size: 30px;
+            font-weight: 500px;
+            color: #333;
+       }
+       .AppBody span {
+            font-size: 25px;
+            font-weight: #333;
+            color: #333;
+            margin: 10px 0 15px 0;
+       }
+       .AppBody button {
+            padding: 10px 25px;
+            font-size: 20px;
+            font-weight: 500;
+            border: none;
+            outline: none;
+            background: #fff;
+            color: rgba(13, 204, 45, 0.651);
+            border-radius: 5px;
+            cursor: pointer;
+       }
+       .AppBody img {
+        height: 100%;
+        width: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+       }
+    </style>
+</head>
+<body>
+    <div class="AppBody">
+        <div class="icon">
+            <i class="fas fa-images"></i>
+        </div>
+        <h3>Drag & Drop</h3>
+        <span>OR</span>
+        <button>Browse file</button>
+        <input type="file" hidden>
+    </div>
+    <script>
+        const DragArea = document.querySelector(".AppBody"),
+            DragText = DragArea.querySelector("h3"),
+            button = DragArea.querySelector("button"),
+            input = DragArea.querySelector("input");
+            let Myfile ;
+
+
+            button.onclick = () => {
+                input.click()
+            }
+
+            input.addEventListener("change",function(){
+                Myfile = this.files[0];
+                DragArea.classList.add("active");
+                ShowMe();
+            })
+
+            DragArea.addEventListener("dragover",(event) => {
+                event.preventDefault();
+                DragArea.classList.add("active");
+
+                DragText.textContent = "Release to Upload";
+
+            })
+             
+             DragArea.addEventListener("dragleave", () => {
+                DragArea.classList.remove("active");
+                DragText.textContent = "Drag & Drop";
+             });
+
+             DragArea.addEventListener("drop",(event) => {
+                event.preventDefault();
+                Myfile = event.dataTransfer.files[0];
+
+                ShowMe()
+             })
+
+             function ShowMe(){
+                let filetype = Myfile.type;
+                let ValidEx = ["image/jpeg","image/jpg","image/png"];
+
+                if(ValidEx.includes(filetype)){
+                    let fileReader = new FileReader();
+
+                    fileReader.onload = () => {
+                        let imgUrl = fileReader.result;
+                        let img = ` <img src="${imgUrl}" alt="">`
+
+                        DragArea.innerHTML = img
+                    }
+                    fileReader.readAsDataURL(Myfile);
+                }
+               else{
+                 alert("This File Is Not valid");
+                  DragArea.classList.remove("active");
+                   DragText.textContent = "Drag & Drop";
+               }
+             }
+            
+    </script>
+</body>
+</html>

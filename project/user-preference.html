@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user preference</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .container{
+          padding: 1rem;  
+        }
+        select{
+            margin: 0  1rem  1rem  0;
+        }
+        main{
+          background-color: aqua;
+          font-size: 16px;
+          padding: 1rem;  
+        }
+        p{
+            margin: 1rem;
+        }
+        button{
+            border-radius: 0.6rem;
+            padding: 0.3rem;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <label for="selectFontSize">Select Font-size:</label>
+        <select name="selectFontSize" id="selectFontSize">
+            <option value="16px">16px</option>
+            <option value="18px">18px</option>
+            <option value="20px">20px</option>
+            <option value="22px">22px</option>
+        </select>
+        <label for="selectBgColor">Select background-color:</label>
+        <select name="selectBgColor" id="selectBgColor">
+            <option value="aqua">aqua</option>
+            <option value="green">green</option>
+            <option value="orange">orange</option>
+            <option value="pink">pink</option>
+        </select>
+        <button type="submit" id="resetButton">reset</button>
+        <main>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                 Beatae natus ullam quibusdam fuga cumque corporis alias veritatis aliquam facere. 
+                 Velit dolorum nam unde aut odit corporis ipsum sunt, nemo quisquam tempore fugit
+                  repellendus ut totam incidunt optio reprehenderit saepe suscipit vel at corrupti 
+                  temporibus dolor hic. Amet, numquam qui aut quae deleniti dolor sit labore soluta.
+                   Iste qui aspernatur, itaque perspiciatis corrupti nam dicta ad, ea, aliquam adipisci nihil! Expedita quibusdam
+                    architecto repellendus ea illum magni aut deleniti reprehenderit odio suscipit, maxime esse, repudiandae nostrum
+                     molestiae eveniet libero quaerat alias nam velit quae, tempore aspernatur modi neque dolore? Iste suscipit atque
+                      id assumenda ipsa natus illo eveniet adipisci corporis, non quam quidem accusantium voluptas quod odit numquam
+                       quo. Voluptatibus, voluptatem!</p>
+            <p>Velit necessitatibus quas pariatur suscipit voluptatum eos possimus doloremque tempora cupiditate sed, dolorum qui,
+                 molestiae veniam. Quod temporibus a reprehenderit dicta, eaque id repellendus explicabo? Esse reiciendis sed
+                  pariatur fugiat beatae explicabo dolore rem velit, adipisci tenetur nostrum debitis repellendus fuga quas, aut 
+                  odio iusto natus voluptates quibusdam aliquam nemo quo delectus! Similique nesciunt perspiciatis aspernatur minus 
+                  sit fugiat provident temporibus laborum ea? Commodi quaerat libero harum molestias neque consectetur tenetur,
+                   dignissimos odio praesentium voluptas esse voluptate sed ducimus rerum autem architecto nesciunt qui iusto.
+                    Assumenda corrupti provident quas officia deleniti dolorem quibusdam rem quam doloribus ipsum, harum libero
+                     beatae et qui laborum quidem temporibus blanditiis, quo ad exercitationem! Incidunt corporis sit laudantium?
+                      Voluptate, molestiae quam fugiat repellendus repellat magni.</p>
+        </main>
+    </div>
+    <script>
+       const selectFontSize = document.getElementById("selectFontSize");
+        const selectBgColor = document.getElementById("selectBgColor");
+       const resetButton= document.getElementById("resetButton");
+       const mainElement= document.querySelector("main");
+
+       const setValue = (fontSize, BgColor) => {
+            selectFontSize.value = fontSize;
+            selectBgColor.value = BgColor;
+            mainElement.style.fontSize= FontSize;
+            mainElement.style.backgroundColor= BgColor;
+       }
+       // load LocalStorage value
+       const initialSetup = () => {
+        const BgColor = localStorage.getItem("bgColor");
+        const FontSize = localStorage.getItem("fontSize");
+        if(BgColor && FontSize){
+           setValue(fontSize, BgColor)
+        }
+         if(!BgColor && !FontSize){
+             setValue("16px", "aqua");
+        }
+        if(!BgColor && FontSize){
+             setValue(fontSize, "aqua");
+        }
+        if(BgColor && !FontSize){
+             setValue("16px", BgColor);
+        }
+       }
+       // changeFontSize function
+       const changeFontSize = (event) =>{
+        const selectFontSize = event.target.value;
+        mainElement.style.fontSize= selectFontSize;
+        localStorage.setItem("fontSize",selectFontSize);
+       };
+       // changeBgcolor function
+       const changeBgColor = (event) =>{
+        const selectBgColor = event.target.value;
+        mainElement.style.backgroundColor= selectBgColor;
+        localStorage.setItem("bgColor",selectBgColor);
+       };
+       //clearLocalStorage
+       const clearLocalStorage = () =>{
+        localStorage.removeItem("bgColor");
+         localStorage.removeItem("fontSize");
+         setValue("16px", "aqua");
+       };
+       // add event listeners
+       selectFontSize.addEventListener("change", changeFontSize );
+       selectBgColor.addEventListener("change", changeBgColor);
+       resetButton.addEventListener("click", clearLocalStorage);
+       initialSetup();
+    </script>
+</body>
+</html>

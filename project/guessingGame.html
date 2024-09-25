@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guessing Game</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            text-decoration: none;
+            list-style-type: none;
+            font-weight: 400;
+        }
+        .container{
+            width: 100%;
+            height: 100vh;
+            background-color: bisque;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .card{
+            width: 32rem;
+            height: 20rem;
+            background-color: rgb(2, 160, 245);
+            border-radius: 0.6rem;
+            padding: 1rem;
+            color: white;
+            box-shadow: 0.1rem 0.1rem 0.1rem #222, -0.1rem 0 0.1rem #222;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        .card:hover {
+             box-shadow: 0.2rem  0.2rem  0.2rem #222, -0.2rem  0  0.2rem #222;
+        }
+        .card-title{
+            text-align: center;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .form-field{
+            margin: 1rem;
+        }
+        input{
+            border: none;
+            border: 0.1rem solid;
+            border-radius: 0.6rem;
+            padding: 0.2rem;
+            background-color: rgb(4, 117, 238);
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 48%;
+        }
+        .buttons{
+            display: flex;
+            justify-content: flex-end;
+            margin: 0  0.8rem  1rem  0;
+        }
+        .btn{
+            border: none;
+            border: 0.1rem solid;
+            border-radius: 0.6rem;
+            padding: 0.2rem;
+            background-color: rgb(4, 117, 238);
+            transition:all 0.3s;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .btn:hover {
+            background-color: white;
+        }
+         p{
+            text-align: center;
+        }
+        .large-text{
+            font-size: 1.5rem;
+            color: bisque;
+        }   
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-title">
+                <h1>Guessing game</h1>
+            </div>
+            <div class="card-body">
+               <form>
+                  <div class="form-field">
+                      <label for="guessingNumber">Guess a number between 1-5:</label>
+                      <input type="number" id="guessingNumber" min="1" max="5" required>
+                  </div>
+                  <div class="buttons">
+                      <button id="check" type="submit"class="btn">check result</button>
+                 </div>
+               </form>
+                   <p class="resultText"></p>
+                   <p class="remainingAttempts"></p>
+            </div>
+        </div>
+    </div>
+   <script>
+    // initializing some values
+    let totalAttempts = 5;
+    let attempts = 0;
+    let totalwons =0;
+    let totallosts =0;
+     // finding elements
+     const form = document.querySelector("form");
+     const cardBody = document.querySelector(".card-body");
+     const guessingNumber = form.querySelector("#guessingNumber")
+     const checkButton =form.querySelector("#check");
+     const resultText =cardBody.querySelector(".resultText");
+      const lostWonMessage = document.createElement("p");
+     const remainingAttempts = cardBody.querySelector(".remainingAttempts");
+
+
+     form.addEventListener("submit",function (event){
+        event.preventDefault();
+        checkResult(guessingNumber.value);
+        attempts++;
+        if(attempts==5){
+            guessingNumber.disabled = true;
+            checkButton.disabled = true;
+        };
+        if(attempts> 6){
+           checkResult(guessingNumber.value);
+           remainingAttempts.innerHTML = 'Remaining attempts:' ${
+           totalAttempts - attempts
+          } ;
+        }
+        guessingNumber.value = "";
+     });  
+
+     function checkResult(guessingNumber){
+        const randomNumber = getRandomNumber(5);
+        if(guessingNumber==randomNumber){
+           resultText.innerHTML = `you have won`;
+           totalwons++;
+        } else{
+            resultText.innerHTML =` you have lost; random number was :  ${randomNumber}`;
+            totallosts++;
+        }
+       lostWonMessage.innerHTML =` won: ${ totalWons } ,  Lost: ${totollosts}`;
+       lostWonMessage.classList.add("large-text");
+       cardBody.appendChild(lostWonMessage);
+
+     }
+        function getRandomNumber(limit){
+        return Math.floor(Math.random() * limit)+1;
+        }
+   </script>
+</body>
+</html>

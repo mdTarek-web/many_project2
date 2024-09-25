@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            outline: none;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        .container{
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 1rem;
+        }
+        .card {
+           background-color: #222;
+           color: white;
+           padding: 1rem;
+           min-height: 80vh;
+           width: 50%;
+           overflow: scroll;
+           border-radius: 0.6rem;
+        }
+        .card-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        input {
+            border: none;
+            border-radius: 0.6rem;
+            padding: 0.5rem;
+            width: 80%;
+        } 
+        .btn {
+            border: none;
+            border-radius: 0.6rem;
+            padding: 0.5rem;
+            background-color: orange;
+            color: white;
+            transition: all 0.3s;
+            cursor:pointer ;
+        }
+          .btn:hover {
+            background-color: white;
+            color: black;
+          }
+          #addTodoButton{
+            width: 19%;
+          }
+          .li-style {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.6rem;
+            margin: 1rem 0;
+            transition: all 0.3s;
+          }   
+          .li-style:hover {
+            background-color: #111;
+          }
+          .bg-success{
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            color: black;
+            background-color: #ddffdd;
+            border-left: 6px solid #04aa6d;
+          }
+           .bg-danger {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            color: black;
+            background-color: #ffdddd;
+            border-left: 6px solid #f44336;
+          }
+   
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1 card="card-title">Todo App</h1>
+            <div class="card-body">
+               <form class="todo-form">
+                  <input type="text" placeholder="Enter a todo here" id="inputTodo" required />
+                  <button type="submit" class="btn" id="addTodoButton">Add Todo</button>
+               </form>
+               <p id="message"></p>
+               <ul id="lists"></ul> 
+            </div>
+        </div>
+    </div>
+    <script>
+         const container = document.querySelector(".container");
+         const todoForm = document.querySelector(".todo-form");
+         const todoInput = document.querySelector("#inputTodo");
+         const todoAddButton = document.querySelector("#addTodoButton");
+         const todoLists = document.getElementById("lists");
+          const messageElement = document.getElementById("message");
+          
+          //showMessage
+          const showMessage = (text,status) => {
+            messageElement.textContent = text;
+            messageElement.classList.add(`bg-${status}`);
+            setTimeout(() => {
+                messageElement.textContent = "";
+                messageElement.classList.remove(`bg-${status}`);
+            }, 1000);
+          }
+         //createTodo
+         const createTodo = (todoId,todoValue) => {
+            const todoElement = document.createElement("li");
+            todoElement.id = todoId;
+            todoElement.classList.add("li-style");
+            todoElement.innerHTML = `
+            <span> ${todoValue} </span>
+             <span><button class="btn" id="deleteButton">
+              <i class></i>  </button></span>
+              `;
+              todoLists.appendChild(todoElement);
+
+              const deleteButton = todoElement.querySelector("#deleteButton")
+              deleteButton.addEventListener("click",deleteTodo);
+         };
+         //deleteTodo
+         const deleteTodo = () => {
+            const selectedTodo = event.target.parentElement,
+            parentElement.parentElement;
+
+            todoLists.removeChild(selectedTodo);
+            showMessage("todo is deleted","danger");
+
+            let todos = getTodosFromLocalStorage();
+            todos = todos.folter((todo) =>
+            todo.todoId != selectedTodo.id);
+            localStorage.setItem("mytodos", JSON.stringify(todos));
+         };
+
+        // getTodosFromLocalStorage
+        const getTodosFromLocalStorage = () => {
+            return localStorage.getItem("mytodos")
+            ?JSON.parse(localStorage.getItem("mytodos")) : [];
+        }
+        //addTodo function
+         const addTodo = (event) => {
+            event.preventDefault();
+            const todoValue = todoInput.value;
+
+            // unique id
+            const todoId = Date.now().toString();
+            createTodo(todoId,todoValue);
+            showMessage("todo is added","success");
+            
+            //add todo to local storage
+            const todos = getTodosFromLocalStorage();
+            todos.puss({todoId,todoValue});
+            localStorage.setItem("mytodos", JSON.stringify(todos));
+
+            todoInput.value = "";
+               
+         };
+
+         //loadTodos
+         const loadTodos = () => {
+            const todos = getTodosFromLocalStorage();
+            todos.map((todo) => createTodo(todo.todoId,todo.todoValue));
+         };
+         todoForm.addEventListener("submit",addTodo);
+         window.addEventListener("DOMContentLoaded",loadTodos);
+    </script>
+</body>
+</html>
